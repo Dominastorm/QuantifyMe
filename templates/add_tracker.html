@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.9.min.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="static/style.css" />
+
+    <title>Quantify Me</title>
+  </head>
+  <body class="gradient-custom">
+    <div class="text-center text-white">
+      <h1>Quantify Me</h1>
+      <h5>Track all your daily activities!</h5>
+    </div>
+    <section class="vh-75 gradient-custom">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card bg-dark text-white" style="border-radius: 1rem">
+              <div class="card-body p-5 text-center">
+                <div class="mb-md-5 mt-md-4 pb-5">
+                  <h2 class="fw-bold mb-2 text-uppercase">Add Tracker</h2>
+                  <p class="text-white-50 mb-5">Enter the tracker details!</p>
+
+                  <form>
+                    <label for="name">Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      placeholder="Enter tracker name"
+                      maxlength="30"
+                      required
+                    />
+                    <label for="description">Description</label>
+                    <textarea
+                      class="form-control"
+                      id="description"
+                      name="description"
+                      placeholder="Enter tracker description"
+                      maxlength="200"
+                      required
+                    ></textarea>
+
+                    <label style="padding-top: 10px" for="type"
+                      >Tracker Type</label
+                    >
+                    <select
+                      id="type"
+                      class="form-control"
+                      name="type"
+                      required
+                    >
+                      <option value="Numerical">Numerical</option>
+                      <option value="Multiple Choice">Multiple Choice</option>
+                      <option value="Time Duration">Time Duration</option>
+                      <option value="Boolean">Boolean</option>
+                    </select>
+
+                    <label for="settings"
+                      >Settings <small>(Optional)</small></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="settings"
+                      name="settings"
+                      placeholder="Enter tracker settings"
+                      maxlength="80"
+                    />
+
+                    <br />
+                    <button
+                      type="submit"
+                      class="btn"
+                      style="
+                        border-radius: 12px;
+                        background: -webkit-linear-gradient(
+                          right,rgba(106, 17, 203, 1), rgba(37, 117, 252, 1) 
+                          
+                        );
+                      "
+                    >
+                      <b>Add Tracker</b>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
