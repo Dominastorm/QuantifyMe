@@ -1,9 +1,9 @@
-from database import db
+from .database import db
 import datetime
 
 class User(db.Model):
     __tablename__ = 'users'
-    user_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_name = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -12,24 +12,24 @@ class User(db.Model):
 
 class Tracker(db.Model):
     __tablename__ = 'trackers'
-    tracker_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    tracker_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.Text, nullable=False)
     tracker_type = db.Column(db.Integer, db.ForeignKey('tracker_types.id'), nullable=False)
     settings = db.Column(db.Text, nullable=False)
-    user = db.relationship('User', backref=db.backref('trackers', lazy=True))
 
 class Log(db.Model):
     __tablename__ = 'logs'
-    id = db.Column(db.Integer, primary_key=True, auto_increment=True)
-    tracker_id = db.Column(db.Integer, db.ForeignKey('trackers.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    timestamp = db.Column(db.TimeStamp, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    tracker_id = db.Column(db.Integer, db.ForeignKey('trackers.tracker_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False)
     value = db.Column(db.Float, nullable=False)
     note = db.Column(db.Text, nullable=False)
 
 
+# SQL CODE FOR USERS
 """
 CREATE TABLE users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
