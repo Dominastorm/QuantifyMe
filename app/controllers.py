@@ -1,4 +1,3 @@
-from flask import Flask, request
 from flask import render_template
 from flask import current_app as app
 # from app.models import Dashboard
@@ -15,6 +14,6 @@ def dashboard():
 def journal():
     return render_template('journal.html')
 
-@app.route('/add-tracker', methods=['GET'])
+@app.route('/create-tracker', methods=['GET'])
 def add_tracker():
-    return render_template('add_tracker.html')
+    return render_template('create_tracker.html')

@@ -4,22 +4,11 @@ import datetime
 class User(db.Model):
     __tablename__ = 'users'
     user_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    user_name = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    first_name = db.Column(db.String(80), nullable=False)
-    last_name = db.Column(db.String(80), nullable=False)
-    settings = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.TimeStamp, nullable=False)
-    updated_at = db.Column(db.TimeStamp, nullable=False)
-
-class TrackerType(db.Model):
-    __tablename__ = 'tracker_types'
-    tracker_type_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.TimeStamp, nullable=False)
-    updated_at = db.Column(db.TimeStamp, nullable=False)
+    tracker = db.relationship('Tracker', backref='user', lazy=True)
+    log = db.relationship('Log', backref='user', lazy=True)
 
 class Tracker(db.Model):
     __tablename__ = 'trackers'
@@ -28,62 +17,51 @@ class Tracker(db.Model):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.Text, nullable=False)
     tracker_type = db.Column(db.Integer, db.ForeignKey('tracker_types.id'), nullable=False)
-    created_at = db.Column(db.TimeStamp, nullable=False)
-    updated_at = db.Column(db.TimeStamp, nullable=False)
     settings = db.Column(db.Text, nullable=False)
     user = db.relationship('User', backref=db.backref('trackers', lazy=True))
 
-class TrackerLog(db.Model):
-    __tablename__ = 'tracker_logs'
+class Log(db.Model):
+    __tablename__ = 'logs'
     id = db.Column(db.Integer, primary_key=True, auto_increment=True)
     tracker_id = db.Column(db.Integer, db.ForeignKey('trackers.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     timestamp = db.Column(db.TimeStamp, nullable=False)
     value = db.Column(db.Float, nullable=False)
     note = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.TimeStamp, nullable=False)
-    updated_at = db.Column(db.TimeStamp, nullable=False)
 
-# SQL CODE FOR USERS
+
 """
-CREATE TABLE "users" (
-	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-	"username"	VARCHAR(80) NOT NULL UNIQUE,
-	"password"	VARCHAR(80) NOT NULL,
-	"email"	VARCHAR(120) NOT NULL UNIQUE,
-	"first_name"	VARCHAR(80) NOT NULL,
-	"last_name"	VARCHAR(80) NOT NULL,
-    "settings"	TEXT NOT NULL,
-	"created_at"	TIMESTAMP NOT NULL,
-	"updated_at"	TIMESTAMP NOT NULL
-);
+CREATE TABLE users (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_name VARCHAR(80) UNIQUE NOT NULL,
+    password VARCHAR(80) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL
+    );
 """
 
 # SQL CODE FOR TRACKERS
 """
-CREATE TABLE "trackers" (
-    "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_id"	INTEGER NOT NULL,
-    "name"	VARCHAR(80) NOT NULL,
-    "created_at"	TIMESTAMP NOT NULL,
-    "updated_at"	TIMESTAMP NOT NULL,
-    "settings"	TEXT NOT NULL,
-    FOREIGN KEY("user_id") REFERENCES "users"("id")
-);
+CREATE TABLE trackers (
+    tracker_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    name VARCHAR(80) NOT NULL,
+    description TEXT NOT NULL,
+    tracker_type INTEGER NOT NULL,
+    settings TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    );
 """
 
-# SQL CODE FOR TRACKER LOGS
+# SQL CODE FOR LOGS
 """
-CREATE TABLE "tracker_logs" (
-    "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-    "tracker_id"	INTEGER NOT NULL,
-    "user_id"	INTEGER NOT NULL,
-    "timestamp"	TIMESTAMP NOT NULL,
-    "value"	FLOAT NOT NULL,
-    "note"	TEXT NOT NULL,
-    "created_at"	TIMESTAMP NOT NULL,
-    "updated_at"	TIMESTAMP NOT NULL,
-    FOREIGN KEY("tracker_id") REFERENCES "trackers"("id"),
-    FOREIGN KEY("user_id") REFERENCES "users"("id")
-);
+CREATE TABLE logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tracker_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
+    value FLOAT NOT NULL,
+    note TEXT NOT NULL,
+    FOREIGN KEY (tracker_id) REFERENCES trackers(tracker_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    );
 """

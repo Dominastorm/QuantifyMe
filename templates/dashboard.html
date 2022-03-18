@@ -32,7 +32,7 @@
                         <hr />
                         <div class="row">
                           <div class="col-md-12">
-                            <a href="" class="btn btn-primary"> Create Tracker </a>
+                            <a href="/create-tracker" class="btn btn-primary"> Create Tracker </a>
                           </div>
                         </div>
                         <hr />
@@ -50,19 +50,19 @@
                               </thead>
                               <tbody>
                                 
-                                {% for article in articles %}
+                                {% for tracker in trackers %}
                                 <tr>
-                                  <td>{{ article.title }}</td>
-                                  <td>{{ article.content }}</td>
+                                  <td>{{ tracker.title }}</td>
+                                  <td>{{ tracker.content }}</td>
                                   <td>
-                                    {% for author in article.authors %} 
-                                      <a href='/articles_by/{{author.username}}' target='_blank'>{{ author.username }}</a>
+                                    {% for author in tracker.authors %} 
+                                      <a href='/trackers_by/{{author.username}}' target='_blank'>{{ author.username }}</a>
                                       {% if not loop.last %} 
                                       , 
                                       {% endif %} 
                                     {% endfor %}
                                   </td>
-                                  <td>{{ article.updated_at }}</td>
+                                  <td>{{ tracker.updated_at }}</td>
                                   <td>
                                     <a href="" class="btn btn-primary"> Edit </a>
                                     <a href="" class="btn btn-danger"> Delete </a>
