@@ -4,12 +4,23 @@ from flask import render_template
 from app.config import LocalDevelopmentConfig
 from app.database import db
 
+app = None
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__, template_folder="templates")
+    if os.getenv('ENV', "development") == "production":
+      raise Exception("Currently no production config is setup.")
+    else:
+      print("Staring Local Development")
+      app.config.from_object(LocalDevelopmentConfig)
+    db.init_app(app)
+    app.app_context().push()
+    return app
 
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
+app = create_app()
+
+# Import all the controllers so they are loaded
+from app.controllers import *
 
 if __name__ == '__main__':
     app.run(debug=True)
