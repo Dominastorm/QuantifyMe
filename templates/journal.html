@@ -33,6 +33,7 @@
                             <table class="table table-striped">
                               <thead>
                                 <tr class="text-white">
+                                  <th>ID</th>
                                   <th>Timestamp</th>
                                   <th>Value</th>
                                   <th>Note</th>
@@ -42,14 +43,15 @@
                               <tbody>
                                 {% for log in logs %}
                                 <tr>
+                                  <td class="text-white">{{ log.id }}</td>
                                   <td class="text-white">{{ log.timestamp }}</td>
                                   <td class="text-white">{{ log.value  }}</td>
                                   <td class="text-white">{{ log.note }}</td>
                                   <td>
-                                    <a href="" class="btn btn-primary"> Edit </a>
+                                    <a href="/trackers/{{tracker.name}}/{{log.id}}/edit" class="btn btn-primary"> Edit </a>
                                   </td>
                                   <td>
-                                    <a href="" class="btn btn-danger"> Delete </a>
+                                    <a href="/trackers/{{tracker.name}}/{{log.id}}/delete" class="btn btn-danger"> Delete </a>
                                   </td>
                                 </tr>
                                 {% endfor %}
@@ -60,6 +62,9 @@
                       </div>
                     </div>
                   </div>
+                  <td>
+                    <a href="/home" class="btn btn-primary"> Return to Dashboard </a>
+                  </td>
                 </div>
               </div>
             </div>
