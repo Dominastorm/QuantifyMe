@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-from flask import render_template
 from app.config import LocalDevelopmentConfig
 from app.database import db
 
