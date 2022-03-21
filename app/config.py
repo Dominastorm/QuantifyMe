@@ -8,6 +8,7 @@ class Config():
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class LocalDevelopmentConfig(Config):
+    DEBUG = True
     SQLITE_DB_DIR = os.path.join(basedir, "../db")
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(SQLITE_DB_DIR, "appdb.sqlite3")
-    DEBUG = True
+    SECRET_KEY = "thisisaverysecretkey"
