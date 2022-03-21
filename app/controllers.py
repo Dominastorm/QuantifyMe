@@ -3,8 +3,8 @@ from flask import current_app as app
 from app.models import User, Tracker, Log
 
 @app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
+def login():
+    return render_template('login.html')
 
 @app.route('/sign-up', methods=['GET'])
 def sign_up():
