@@ -8,6 +8,7 @@ from flask_login import login_required, current_user, login_user, logout_user
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 @app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
@@ -15,17 +16,15 @@ def login():
         password = request.form.get('password')
         from .models import User
 
-        user = User.query.filter_by(user_name=username, password=password).first()
+        user = User.query.filter_by(user_name=username).first()
         print(user)
         if user:
-            return redirect(url_for('dashboard'))
-            # login_user(user, remember=True)
-            # if check_password_hash(user.password, password):
-            #     flash('Logged in successfully!', category='success')
-            #     login_user(user, remember=True)
-            #     return redirect(url_for('dashboard'))
-            # else:
-            #     flash('Incorrect password, try again!', category='error')
+            if check_password_hash(user.password, password):
+                flash('Logged in successfully!', category='success')
+                login_user(user, remember=True)
+                return redirect(url_for('dashboard'))
+            else:
+                flash('Incorrect password, try again!', category='error')
 
         else:
             flash('User does not exist.', category='error')
@@ -33,9 +32,30 @@ def login():
 
 @app.route('/sign-up', methods=['GET','POST'])
 def sign_up():
-    return render_template('sign_up.html')
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user_name = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        from .models import User
+        user = User.query.filter_by(email=email).first()
+        print(user)
+        if user:
+            flash('Email is already taken, try another email.', category='error')
+        elif password != confirm_password:
+            flash('Passwords do not match.', category='error')
+        else:
+            from .database import db
+            new_user = User(user_name=user_name, email=email,  password=generate_password_hash(password, method='sha256'))
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Successfully signed up.', category='success')
+
+    return render_template("sign_up.html", user=current_user)
 
 @app.route('/', methods=['GET','POST'])
+@login_required
 def dashboard():
     trackers = Tracker.query.all()
     return render_template('dashboard.html', trackers=trackers)
