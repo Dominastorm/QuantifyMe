@@ -124,6 +124,27 @@ def delete_tracker(tracker):
 def edit_log(tracker, log):
     tracker = Tracker.query.filter_by(name=tracker).first()
     log = Log.query.filter_by(id=log).first()
+    this_tracker = Tracker.query.get(log.tracker_id)
+    try:
+        if request.method == 'POST':
+            when = request.form.get('date')
+            when = datetime.datetime.strptime(when, '%Y-%m-%dT%H:%M')
+            value = request.form.get('value')
+            note = request.form.get('note')
+
+            log.timestamp = when
+            log.value = value
+            log.note = note
+            
+            from .database import db
+            db.session.commit()
+            # flash(this_tracker.name + ' Log Updated Successfully.', category='success')
+            return redirect(url_for('journal', tracker=this_tracker.name))
+            # return redirect(url_for('views.view_tracker', record_id=log.tracker_id))
+    except Exception as e:
+        print(e)
+        # flash('Something went wrong.', category='error')
+
     return render_template('edit_log.html', log=log, tracker=tracker)
 
 

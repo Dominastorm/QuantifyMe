@@ -33,7 +33,7 @@
                         class="form-control"
                         id="date"
                         name="date"
-            value="{{log.timestamp}}"
+                        value="{{ log.timestamp.strftime('%Y-%m-%dT%H:%M') }}"
                         required
                     />
                     <label for="value">Value</label>
@@ -86,11 +86,11 @@
                          {% endif %}
             {% endif %}
             
-                        <label for="notes">Notes</label>
+                        <label for="note">Note</label>
                     <textarea
                         class="form-control"
-                        id="notes"
-                        name="notes"
+                        id="note"
+                        name="note"
                         placeholder="Enter log notes"
                         maxlength="200"
                         required
