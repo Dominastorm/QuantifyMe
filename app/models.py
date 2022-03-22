@@ -1,4 +1,5 @@
 from .database import db
+from flask_login import UserMixin
 
 class User(db.Model):
     __tablename__ = 'users'

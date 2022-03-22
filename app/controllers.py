@@ -11,19 +11,21 @@ from werkzeug.security import generate_password_hash, check_password_hash
 @app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')
+        username = request.form.get('username')
         password = request.form.get('password')
-
         from .models import User
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(user_name=username, password=password).first()
+        print(user)
         if user:
-            if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
-                return redirect(url_for('dashboard'))
-            else:
-                flash('Incorrect password, try again!', category='error')
+            return redirect(url_for('dashboard'))
+            # login_user(user, remember=True)
+            # if check_password_hash(user.password, password):
+            #     flash('Logged in successfully!', category='success')
+            #     login_user(user, remember=True)
+            #     return redirect(url_for('dashboard'))
+            # else:
+            #     flash('Incorrect password, try again!', category='error')
 
         else:
             flash('User does not exist.', category='error')
@@ -57,18 +59,15 @@ def add_tracker():
             from .models import Tracker
             current_user_id = 1
             tracker = Tracker.query.filter_by(name=name).first()
-            print("works till line 41")
             if tracker and current_user_id == tracker.user_id:
                 # flash('The tracker "' + name + '" is already added by you.', category='error')
                 return redirect(url_for('dashboard'))
             else:
-                print("Works till line 46")
                 from .database import db
                 new_tracker = Tracker(name=name, description=description, tracker_type=tracker_type, settings=settings,
                                       user_id=1)
                 db.session.add(new_tracker)
                 db.session.commit()
-                print("works till line 52")
                 # flash('New Tracker Added.', category='success')
                 return redirect(url_for('dashboard'))
     except Exception as e:
