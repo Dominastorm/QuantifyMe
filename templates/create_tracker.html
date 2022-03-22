@@ -27,7 +27,7 @@
                   <h2 class="fw-bold mb-2 text-uppercase">Create Tracker</h2>
                   <p class="text-white-50 mb-5">Enter the tracker details!</p>
 
-                  <form>
+                  <form method="POST">
                     <label for="name">Name</label>
                     <input
                       type="text"
@@ -48,13 +48,13 @@
                       required
                     ></textarea>
 
-                    <label style="padding-top: 10px" for="type"
+                    <label style="padding-top: 10px" for="tracker_type"
                       >Tracker Type</label
                     >
                     <select
-                      id="type"
+                      id="tracker_type"
                       class="form-control"
-                      name="type"
+                      name="tracker_type"
                       required
                     >
                       <option value="Numerical">Numerical</option>

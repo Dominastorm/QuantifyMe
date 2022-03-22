@@ -15,8 +15,8 @@ class Tracker(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    tracker_type = db.Column(db.Integer, db.ForeignKey('tracker_types.id'), nullable=False)
-    settings = db.Column(db.Text, nullable=False)
+    tracker_type = db.Column(db.Integer, nullable=False) #, db.ForeignKey('tracker_types.id'), nullable=False)
+    settings = db.Column(db.Text)
 
 class Log(db.Model):
     __tablename__ = 'logs'
@@ -46,7 +46,7 @@ CREATE TABLE trackers (
     name VARCHAR(80) NOT NULL,
     description TEXT NOT NULL,
     tracker_type INTEGER NOT NULL,
-    settings TEXT NOT NULL,
+    settings TEXT,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     );
 """
