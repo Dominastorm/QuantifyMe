@@ -159,4 +159,16 @@ def edit_log(tracker, log):
 
     return render_template('edit_log.html', log=log, tracker=tracker)
 
-
+@app.route('/trackers/<tracker>/<log>/delete', methods=['GET','POST'])
+def delete_log(tracker, log):
+    try:
+        log = Log.query.filter_by(id=log).first()
+        from .database import db
+        db.session.delete(log)
+        db.session.commit()
+        # flash('Log Deleted Successfully.', category='success')
+    except Exception as e:
+        print(e)
+        # flash('Something went wrong.', category='error')
+    return redirect(url_for('journal', tracker=tracker))
+    # return redirect(url_for('views.view_tracker', record_id=log.tracker_id))
