@@ -117,8 +117,20 @@ def edit_tracker(tracker):
 
 @app.route('/trackers/<tracker>/delete', methods=['GET','POST'])
 def delete_tracker(tracker):
-    # delete tracker
-    return render_template('delete_tracker.html', tracker=tracker)
+    try:
+        from .models import Tracker
+        Tracker_details = Tracker.query.filter_by(name=tracker).first()
+        Tracker_name = Tracker_details.name
+        from .database import db
+        db.session.delete(Tracker_details)
+        db.session.commit()
+        # flash(Tracker_name + ' Tracker Removed Successfully.', category='success')
+    except Exception as e:
+        print(e)
+        # flash('Something went wrong.', category='error')
+    return redirect(url_for('dashboard'))
+
+    # return render_template('delete_tracker.html', tracker=tracker)
 
 @app.route('/trackers/<tracker>/<log>/edit', methods=['GET','POST'])
 def edit_log(tracker, log):
