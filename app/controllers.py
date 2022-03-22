@@ -61,12 +61,14 @@ def dashboard():
     return render_template('dashboard.html', trackers=trackers)
 
 @app.route('/trackers/<tracker>', methods=['GET','POST'])
+@login_required
 def journal(tracker):
     tracker = Tracker.query.filter_by(name=tracker).first()
     logs = Log.query.filter_by(tracker_id=tracker.tracker_id).all()
     return render_template('journal.html', tracker=tracker, logs=logs)
 
 @app.route('/create-tracker', methods=['GET','POST'])
+@login_required
 def add_tracker():
     try:
         if request.method == 'POST':
@@ -96,6 +98,7 @@ def add_tracker():
     return render_template('create_tracker.html')
 
 @app.route('/trackers/<tracker>/log', methods=['GET','POST'])
+@login_required
 def log_tracker(tracker): 
     from .models import Tracker, Log
     tracker = Tracker.query.filter_by(name=tracker).first()
@@ -121,6 +124,7 @@ def log_tracker(tracker):
     return render_template("log_tracker.html", user=current_user, tracker=tracker, now=now)
     
 @app.route('/trackers/<tracker>/edit', methods=['GET','POST'])
+@login_required
 def edit_tracker(tracker):
     tracker = Tracker.query.filter_by(name=tracker).first()
     tracker_name = tracker.name
@@ -153,6 +157,7 @@ def edit_tracker(tracker):
     return render_template('edit_tracker.html', tracker=tracker)
 
 @app.route('/trackers/<tracker>/delete', methods=['GET','POST'])
+@login_required
 def delete_tracker(tracker):
     try:
         from .models import Tracker
@@ -170,6 +175,7 @@ def delete_tracker(tracker):
     # return render_template('delete_tracker.html', tracker=tracker)
 
 @app.route('/trackers/<tracker>/<log>/edit', methods=['GET','POST'])
+@login_required
 def edit_log(tracker, log):
     tracker = Tracker.query.filter_by(name=tracker).first()
     log = Log.query.filter_by(id=log).first()
@@ -197,6 +203,7 @@ def edit_log(tracker, log):
     return render_template('edit_log.html', log=log, tracker=tracker)
 
 @app.route('/trackers/<tracker>/<log>/delete', methods=['GET','POST'])
+@login_required
 def delete_log(tracker, log):
     try:
         log = Log.query.filter_by(id=log).first()
